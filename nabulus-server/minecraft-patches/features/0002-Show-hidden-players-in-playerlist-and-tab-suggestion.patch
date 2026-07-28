@@ -5,7 +5,7 @@ Subject: [PATCH] Show hidden players in playerlist and tab suggestions
 
 
 diff --git a/net/minecraft/commands/CommandSourceStack.java b/net/minecraft/commands/CommandSourceStack.java
-index 527ad5bc90aebf7344b5a7741c792d701794f335..0e51e50e1c5f12ac675211cafb62c3d8b8b13366 100644
+index 89b9d1a4122d502437d516f8affc5ba72f421f5f..72b827f0977dabf2f9abf2ac82d41c926538bc59 100644
 --- a/net/minecraft/commands/CommandSourceStack.java
 +++ b/net/minecraft/commands/CommandSourceStack.java
 @@ -562,7 +562,7 @@ public class CommandSourceStack implements SharedSuggestionProvider, ExecutionCo
@@ -31,7 +31,7 @@ index b850c908a594f839ce124c6bd01762d31cc3aa1e..ed8fb66ce07b1d9f1641e19de73ab598
          final List<ServerPlayer> players = playersTemp;
          // CraftBukkit end
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index 7032eb65ec6b08670e2a5e296796a2215dc384bc..14699a47f8621bfb5b9ea14c628f014086596454 100644
+index 80557671399b67dbbcf73f0fae3ab800f6ed2bbc..b31aa51f31dda675113863ff1a8cbcceeda90ce4 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
 @@ -261,7 +261,7 @@ public abstract class PlayerList {
@@ -52,7 +52,7 @@ index 7032eb65ec6b08670e2a5e296796a2215dc384bc..14699a47f8621bfb5b9ea14c628f0140
              }
  
              onlinePlayers.add(entityplayer1); // Paper - Use single player info update packet on join
-@@ -524,6 +524,7 @@ public abstract class PlayerList {
+@@ -520,6 +520,7 @@ public abstract class PlayerList {
              if (otherPlayer.getBukkitEntity().canSee(player.getBukkitEntity())) {
                  otherPlayer.connection.send(packet);
              } else {
