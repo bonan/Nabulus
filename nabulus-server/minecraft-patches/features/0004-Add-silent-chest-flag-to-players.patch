@@ -5,12 +5,12 @@ Subject: [PATCH] Add silent chest flag to players
 
 
 diff --git a/net/minecraft/world/entity/LivingEntity.java b/net/minecraft/world/entity/LivingEntity.java
-index 3a4da514c163e7565fc241835db52c464a5c4734..27375794d85539cfe989d82e26d63e45a079e6cc 100644
+index f332edbc4dad82cbdc02a58aa9ec21faf1f2db89..1f1aac2c8ef64f8292eb633dc5d4898851fb6d96 100644
 --- a/net/minecraft/world/entity/LivingEntity.java
 +++ b/net/minecraft/world/entity/LivingEntity.java
-@@ -306,6 +306,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
+@@ -305,6 +305,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
      public net.kyori.adventure.util.TriState frictionState = net.kyori.adventure.util.TriState.NOT_SET; // Paper - Friction API
-     public int invulnerableDuration = LivingEntity.INVULNERABLE_DURATION; // Paper - configurable invulnerable duration
+     public int invulnerableDuration = LivingEntity.DAMAGE_COOLDOWN_DURATION; // Paper - configurable invulnerable duration
      // CraftBukkit end
 +    public boolean silentChests = false; // Nabulus
  

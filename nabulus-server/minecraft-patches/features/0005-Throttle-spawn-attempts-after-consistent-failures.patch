@@ -5,10 +5,10 @@ Subject: [PATCH] Throttle spawn attempts after consistent failures
 
 
 diff --git a/net/minecraft/world/level/NaturalSpawner.java b/net/minecraft/world/level/NaturalSpawner.java
-index e193cbed115663e9ca7a611837d5b8540dda03db..f7840b93eebc9bc55b0962b3994611e68647714e 100644
+index 06c63a3429d010546c8b9de610cbae7bf6bb6935..bb1f70bcd8048384404ec3fced222e3671f781ea 100644
 --- a/net/minecraft/world/level/NaturalSpawner.java
 +++ b/net/minecraft/world/level/NaturalSpawner.java
-@@ -163,6 +163,11 @@ public final class NaturalSpawner {
+@@ -157,6 +157,11 @@ public final class NaturalSpawner {
          profiler.push("spawner");
  
          for (MobCategory mobCategory : spawningCategories) {
@@ -20,7 +20,7 @@ index e193cbed115663e9ca7a611837d5b8540dda03db..f7840b93eebc9bc55b0962b3994611e6
              // Paper start - Optional per player mob spawns
              final boolean canSpawn;
              int maxSpawns = Integer.MAX_VALUE;
-@@ -191,8 +196,17 @@ public final class NaturalSpawner {
+@@ -185,8 +190,17 @@ public final class NaturalSpawner {
                  canSpawn = state.canSpawnForCategoryLocal(mobCategory, chunk.getPos());
              }
              if (canSpawn) {
@@ -39,7 +39,7 @@ index e193cbed115663e9ca7a611837d5b8540dda03db..f7840b93eebc9bc55b0962b3994611e6
                  // Paper end - Optional per player mob spawns
              }
          }
-@@ -624,6 +638,7 @@ public final class NaturalSpawner {
+@@ -617,6 +631,7 @@ public final class NaturalSpawner {
          private @Nullable BlockPos lastCheckedPos;
          private @Nullable EntityType<?> lastCheckedType;
          private double lastCharge;
@@ -48,10 +48,10 @@ index e193cbed115663e9ca7a611837d5b8540dda03db..f7840b93eebc9bc55b0962b3994611e6
          private SpawnState(
              final int spawnableChunkCount,
 diff --git a/net/minecraft/world/level/chunk/LevelChunk.java b/net/minecraft/world/level/chunk/LevelChunk.java
-index 681563230061212afa7994c8eb16c068754db5dd..680455993e790136fe757794d168d9e803dd5688 100644
+index af4106497a69f9b311970197016c6157475a7d85..87e0aca5bb7e3246c29dac2e96ed9e2ba8f1ecf5 100644
 --- a/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -93,6 +93,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource, ca.spot
+@@ -92,6 +92,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource, ca.spot
      private final Int2ObjectMap<GameEventListenerRegistry> gameEventListenerRegistrySections;
      private final LevelChunkTicks<Block> blockTicks;
      private final LevelChunkTicks<Fluid> fluidTicks;

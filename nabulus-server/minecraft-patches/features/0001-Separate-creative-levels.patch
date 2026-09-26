@@ -5,22 +5,22 @@ Subject: [PATCH] Separate creative levels
 
 
 diff --git a/ca/spottedleaf/dataconverter/minecraft/versions/V1022.java b/ca/spottedleaf/dataconverter/minecraft/versions/V1022.java
-index dab97581780d0d3156335fe0fbb84ea0823c5585..4917c74145220fda494bcc17382ba2a9436507d1 100644
+index 0c7386ebc9346aa7fd2220b05a12f9538f1400cc..5268efee271bd96cc74a9a7e1f6fc1530e20f92b 100644
 --- a/ca/spottedleaf/dataconverter/minecraft/versions/V1022.java
 +++ b/ca/spottedleaf/dataconverter/minecraft/versions/V1022.java
-@@ -17,6 +17,7 @@ public final class V1022 {
+@@ -20,6 +20,7 @@ public final class V1022 {
  
-             WalkerUtils.convertList(MCTypeRegistry.ITEM_STACK, data, "Inventory", fromVersion, toVersion);
-             WalkerUtils.convertList(MCTypeRegistry.ITEM_STACK, data, "EnderItems", fromVersion, toVersion);
+                 WalkerUtils.convertList(MCTypeRegistry.ITEM_STACK, data, "Inventory", fromVersion, toVersion);
+                 WalkerUtils.convertList(MCTypeRegistry.ITEM_STACK, data, "EnderItems", fromVersion, toVersion);
 +            WalkerUtils.convertList(MCTypeRegistry.ITEM_STACK, data, "Nabulus.CreativeLevelInventory", fromVersion, toVersion);
  
-             WalkerUtils.convert(MCTypeRegistry.ENTITY, data, "ShoulderEntityLeft", fromVersion, toVersion);
-             WalkerUtils.convert(MCTypeRegistry.ENTITY, data, "ShoulderEntityRight", fromVersion, toVersion);
+                 WalkerUtils.convert(MCTypeRegistry.ENTITY, data, "ShoulderEntityLeft", fromVersion, toVersion);
+                 WalkerUtils.convert(MCTypeRegistry.ENTITY, data, "ShoulderEntityRight", fromVersion, toVersion);
 diff --git a/ca/spottedleaf/dataconverter/minecraft/versions/V4312.java b/ca/spottedleaf/dataconverter/minecraft/versions/V4312.java
-index 7015d97cb5b97d59ca41f63ba23da1edfb6bae0a..98999e673ba29329948cbba8838fc1f6ed419175 100644
+index cc39b5186b511f99f5c8fc212cae96d3c2960db9..9fcb373cfa44ecc428194313b5fbd706a51f0f5b 100644
 --- a/ca/spottedleaf/dataconverter/minecraft/versions/V4312.java
 +++ b/ca/spottedleaf/dataconverter/minecraft/versions/V4312.java
-@@ -27,7 +27,14 @@ public final class V4312 {
+@@ -28,7 +28,14 @@ public final class V4312 {
  
              @Override
              public MapType convert(final MapType data, final long sourceVersion, final long toVersion) {
@@ -36,7 +36,7 @@ index 7015d97cb5b97d59ca41f63ba23da1edfb6bae0a..98999e673ba29329948cbba8838fc1f6
                  if (inventory == null) {
                      return null;
                  }
-@@ -53,7 +60,7 @@ public final class V4312 {
+@@ -54,7 +61,7 @@ public final class V4312 {
                      equipment.setMap(equipmentKey, item);
                  }
  
@@ -46,10 +46,10 @@ index 7015d97cb5b97d59ca41f63ba23da1edfb6bae0a..98999e673ba29329948cbba8838fc1f6
                  return null;
              }
 diff --git a/net/minecraft/server/level/ServerPlayer.java b/net/minecraft/server/level/ServerPlayer.java
-index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4fb3802a6b 100644
+index 23b3a82ab3e1c6abc85000d9285470cb12300a6b..b2afb34d4a295f0f405210e2470f7c4c1fdd0ac0 100644
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -1482,6 +1482,13 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1542,6 +1542,13 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
              this.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
          }
  
@@ -63,7 +63,7 @@ index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4f
          ServerLevel newLevel = transition.newLevel();
          ServerLevel oldLevel = this.level();
          ResourceKey<Level> lastDimension = oldLevel.dimension();
-@@ -1538,6 +1545,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -1598,6 +1605,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          profiler.pop();
          profiler.push("placing");
          this.setServerLevel(newLevel);
@@ -71,7 +71,7 @@ index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4f
          this.connection.internalTeleport(PositionMoveRotation.of(transition), transition.relatives()); // CraftBukkit - use internal teleport without event
          this.connection.resetPosition();
          newLevel.addDuringTeleport(this);
-@@ -2146,11 +2154,21 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2213,11 +2221,21 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
      }
  
      public void restoreFrom(final ServerPlayer oldPlayer, final boolean restoreAll) {
@@ -93,7 +93,7 @@ index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4f
          if (restoreAll) {
              // this.getAttributes().assignPermanentModifiers(oldPlayer.getAttributes()); // CraftBukkit
              this.setHealth(oldPlayer.getHealth());
-@@ -2181,6 +2199,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2248,6 +2266,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
          this.currentExplosionImpactPos = oldPlayer.currentExplosionImpactPos;
          this.currentExplosionCause = oldPlayer.currentExplosionCause;
          this.chunkTrackingView = oldPlayer.chunkTrackingView;
@@ -101,7 +101,7 @@ index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4f
          this.requestedDebugSubscriptions = oldPlayer.requestedDebugSubscriptions;
          this.setShoulderEntityLeft(oldPlayer.getShoulderEntityLeft());
          this.setShoulderEntityRight(oldPlayer.getShoulderEntityRight());
-@@ -2715,6 +2734,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
+@@ -2766,6 +2785,7 @@ public class ServerPlayer extends Player implements ca.spottedleaf.moonrise.patc
      public void setServerLevel(final ServerLevel level) {
          this.setLevel(level);
          this.gameMode.setLevel(level);
@@ -110,10 +110,10 @@ index 3cd4e850f223100b61ac6831a87dd38f3a3bb58f..9aec3d45b8c82848d688fea3eff47a4f
  
      private static @Nullable GameType readPlayerMode(final ValueInput playerInput, final String modeTag) {
 diff --git a/net/minecraft/server/players/PlayerList.java b/net/minecraft/server/players/PlayerList.java
-index baec5d072b8f2d9379dba850b04e881e5267ca6b..80557671399b67dbbcf73f0fae3ab800f6ed2bbc 100644
+index a7f589970a04e520eb5cbe6dfeb333bc9cd479a8..69cd7603ba57690839cf1d269448f930d4145d14 100644
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -606,8 +606,15 @@ public abstract class PlayerList {
+@@ -609,8 +609,15 @@ public abstract class PlayerList {
          serverPlayer.level().removePlayerImmediately(serverPlayer, removalReason);
          ServerLevel level = respawnInfo.newLevel();
          ServerPlayer player = serverPlayer; // Paper - TODO - recreate instance
@@ -131,10 +131,10 @@ index baec5d072b8f2d9379dba850b04e881e5267ca6b..80557671399b67dbbcf73f0fae3ab800
          player.setMainArm(serverPlayer.getMainArm());
          if (false && !respawnInfo.missingRespawnBlock()) { // Paper - Once we not reuse the player entity, this can be flipped again but without the events being fired
 diff --git a/net/minecraft/world/entity/Entity.java b/net/minecraft/world/entity/Entity.java
-index 0fa6006a7c344f9f12972008e586b4c1f03c470e..7dc97595187577566b3fe51ebe36d8f2461a176b 100644
+index cf3619b6de23f32e9e5a81fbe287fb438ecfcabc..c334e04c1f636211535d462e82ffb67a1b227496 100644
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -4093,6 +4093,11 @@ public abstract class Entity
+@@ -4207,6 +4207,11 @@ public abstract class Entity
          }
          // Paper end - Fix item duplication and teleport issues
          if (this.level() instanceof ServerLevel serverLevel && !this.isRemoved()) {
@@ -163,7 +163,7 @@ index 7ec15f3d3a770e1e9e2fbac29dd38e947bb07091..375610a8a544926f63bccd8434f94c89
      }
  
 diff --git a/net/minecraft/world/entity/player/Player.java b/net/minecraft/world/entity/player/Player.java
-index 5d4b3ed09fe10f545d0720b2919f0d6c822d5196..1daebccceb5ef5962de79843f611fa0646e478e9 100644
+index 4068dc1cea4edca196dc0c58b4804e94dd07881e..fec8c62191014c5df073fa7c102b93c4eb802ef7 100644
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
 @@ -179,6 +179,36 @@ public abstract class Player extends Avatar implements ContainerUser {
@@ -203,7 +203,7 @@ index 5d4b3ed09fe10f545d0720b2919f0d6c822d5196..1daebccceb5ef5962de79843f611fa06
      @Override
      public org.bukkit.craftbukkit.entity.CraftHumanEntity getBukkitEntity() {
          return (org.bukkit.craftbukkit.entity.CraftHumanEntity) super.getBukkitEntity();
-@@ -664,6 +694,14 @@ public abstract class Player extends Avatar implements ContainerUser {
+@@ -656,6 +686,14 @@ public abstract class Player extends Avatar implements ContainerUser {
          this.setUUID(this.gameProfile.id());
          this.inventory.load(input.listOrEmpty("Inventory", ItemStackWithSlot.CODEC));
          this.inventory.setSelectedSlot(input.getIntOr("SelectedItemSlot", 0));
@@ -218,7 +218,7 @@ index 5d4b3ed09fe10f545d0720b2919f0d6c822d5196..1daebccceb5ef5962de79843f611fa06
          this.sleepCounter = input.getShortOr("SleepTimer", (short)0);
          this.experienceProgress = input.getFloatOr("XpP", 0.0F);
          this.experienceLevel = input.getIntOr("XpLevel", 0);
-@@ -683,10 +721,24 @@ public abstract class Player extends Avatar implements ContainerUser {
+@@ -675,10 +713,24 @@ public abstract class Player extends Avatar implements ContainerUser {
  
      @Override
      protected void addAdditionalSaveData(final ValueOutput output) {
